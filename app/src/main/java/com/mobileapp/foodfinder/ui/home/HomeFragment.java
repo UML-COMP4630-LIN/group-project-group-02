@@ -114,6 +114,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
 
             keyword_URL = "&keyword=food+bank&key=%s";
+            Log.d("Request URL", searchURL + distance_URL + keyword_URL);
             String nearbySearchUrl = String.format(
                     searchURL + distance_URL + keyword_URL,
                     userLatLng.latitude,
