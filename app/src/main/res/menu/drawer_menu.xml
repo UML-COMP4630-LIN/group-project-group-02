@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Dark Mode toggle item -->
     <item
         android:id="@+id/menu_dark_mode"
         android:icon="@drawable/menu_darkmode"
         android:title="Dark Mode" />
 
-    <!-- About menu item -->
     <item
         android:id="@+id/menu_about"
         android:icon="@drawable/menu_info"
