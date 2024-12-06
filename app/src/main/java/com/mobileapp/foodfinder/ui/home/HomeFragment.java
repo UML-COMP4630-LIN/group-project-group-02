@@ -38,6 +38,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private FragmentHomeBinding binding;
     private GoogleMap mMap;
+    private String searchURL;
+    private String distance_URL;
+    private String keyword_URL;
+    //private String user_distance;
 
     private void initializePlacesApi() {
         if (!Places.isInitialized()) {
@@ -74,8 +78,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         // Set up the search button functionality
         binding.addressSubmit.setOnClickListener(view -> {
             String address = binding.addressInput.getText().toString().trim();
+            String distance = binding.distanceInput.getText().toString().trim();
             if (!address.isEmpty()) {
-                searchFoodBanks(address);
+                searchFoodBanks(address, distance);
             } else {
                 Toast.makeText(getContext(), "Please enter a valid address.", Toast.LENGTH_SHORT).show();
             }
@@ -91,7 +96,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @SuppressLint("MissingPermission")
-    private void searchFoodBanks(String address) {
+    private void searchFoodBanks(String address, String distance) {
         try {
             LatLng userLatLng = convertAddressToLatLng(address);
 
@@ -99,11 +104,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(userLatLng).title("Your Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 14));
-
             // URL for Google Places Nearby Search API with keyword filter
+            searchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f";
             String apiKey = getApiKey();
+            if(distance.isEmpty()){ // Distance defaults to 5000 meters
+                distance_URL = "&radius=" + "5000";
+            }else{
+                distance_URL = "&radius=" + distance;
+            }
+
+            keyword_URL = "&keyword=food+bank&key=%s";
+            Log.d("Request URL", searchURL + distance_URL + keyword_URL);
             String nearbySearchUrl = String.format(
-                    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=5000&keyword=food+bank&key=%s",
+                    searchURL + distance_URL + keyword_URL,
                     userLatLng.latitude,
                     userLatLng.longitude,
                     apiKey
@@ -135,18 +148,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                     JSONObject place = results.getJSONObject(i);
                                     String name = place.getString("name");
 
-                                    // Filter for relevant results based on name
+                                    JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
+                                    double lat = location.getDouble("lat");
+                                    double lng = location.getDouble("lng");
 
-                                        JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
-                                        double lat = location.getDouble("lat");
-                                        double lng = location.getDouble("lng");
-
-                                        // Add a marker to the map
-                                        LatLng placeLatLng = new LatLng(lat, lng);
-                                        mMap.addMarker(new MarkerOptions()
-                                                .position(placeLatLng)
-                                                .title(name));
-
+                                    // Add a marker to the map
+                                    LatLng placeLatLng = new LatLng(lat, lng);
+                                    mMap.addMarker(new MarkerOptions().position(placeLatLng).title(name));
                                 }
                                 Toast.makeText(getContext(), "Food banks added to map.", Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
