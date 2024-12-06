@@ -16,4 +16,11 @@
         android:name="com.mobileapp.foodfinder.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/navigation_about"
+        android:name="com.mobileapp.foodfinder.ui.about.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+
 </navigation>

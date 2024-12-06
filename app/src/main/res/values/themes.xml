@@ -1,20 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme -->
-    <style name="Theme.FoodFinder" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.FoodFinder" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/green_primary</item>
         <item name="colorPrimaryVariant">@color/green_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item> <!-- Ensures title is white -->
         <!-- Secondary brand color -->
         <item name="colorSecondary">@color/green_light</item>
         <item name="colorSecondaryVariant">@color/green_primary</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here -->
-        <item name="android:colorBackground">@color/gray_light</item>
+        <!-- Background Color -->
+        <item name="android:colorBackground">@color/white</item>
+        <!-- Text Color -->
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/gray_dark</item>
-        <item name="android:navigationBarColor">@color/green_dark</item>
+        <item name="android:navigationBarColor">@color/green_primary</item>
+
+        <!-- EditText Text Color (inside text box) -->
+        <item name="colorControlNormal">@color/black</item> <!-- Ensures text in EditText is black -->
+        <item name="android:textColor">@color/black</item> <!-- Ensures text color in input fields is black -->
     </style>
 </resources>
