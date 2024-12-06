@@ -6,4 +6,6 @@
     <string name="submit_button">Submit</string>
     <string name="distance_hint">Search Distance (Meters)</string>
     <string name="address_hint">Address</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 </resources>
