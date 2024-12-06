@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_dark_mode"
+        android:icon="@drawable/menu_darkmode"
+        android:title="@string/dark_mode" />
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/menu_info"
+        android:title="@string/about" />
+</menu>

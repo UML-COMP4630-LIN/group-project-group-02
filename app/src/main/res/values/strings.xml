@@ -8,4 +8,6 @@
     <string name="address_hint">Address</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="about">About</string>
 </resources>
