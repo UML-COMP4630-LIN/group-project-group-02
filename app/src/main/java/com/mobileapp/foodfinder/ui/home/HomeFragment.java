@@ -26,7 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -147,14 +151,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 for (int i = 0; i < results.length(); i++) {
                                     JSONObject place = results.getJSONObject(i);
                                     String name = place.getString("name");
-
+                                    JSONArray types = place.getJSONArray("types");
                                     JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
                                     double lat = location.getDouble("lat");
                                     double lng = location.getDouble("lng");
 
-                                    // Add a marker to the map
-                                    LatLng placeLatLng = new LatLng(lat, lng);
-                                    mMap.addMarker(new MarkerOptions().position(placeLatLng).title(name));
+                                    // Define the set of strings to be removed
+                                    Set<String> stringsToRemove = new HashSet<>(Arrays.asList("convenience_store", "gas_station"));
+
+                                    for (int j = 0; j < types.length(); j++) {
+                                        String type = types.getString(j); // Get the type string from the JSONArray
+
+                                        if (stringsToRemove.contains(type)) {
+                                            types.remove(j);
+                                            j--; // Adjust index for the removed element
+                                            Log.d("Types to be removed", stringsToRemove.toString());
+
+                                        } else {
+                                            // Add a marker to the map
+                                            LatLng placeLatLng = new LatLng(lat, lng);
+                                            mMap.addMarker(new MarkerOptions().position(placeLatLng).title(name));
+                                            Log.d("Types Out", types.toString());
+                                        }
+                                    }
+
                                 }
                                 Toast.makeText(getContext(), "Food banks added to map.", Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
@@ -173,9 +193,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private LatLng convertAddressToLatLng(String address) throws IOException {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        return geocoder.getFromLocationName(address, 1).stream()
+        //no need for null check here because of the 'optional' class. The 'optional' object will never be null.
+        // The stream invocation may produce a nullPointerException, changed to call 'requireNonNull'
+        return Objects.requireNonNull(geocoder.getFromLocationName(address, 1)).stream()
                 .findFirst()
                 .map(location -> new LatLng(location.getLatitude(), location.getLongitude()))
                 .orElseThrow(() -> new IOException("Address not found"));
