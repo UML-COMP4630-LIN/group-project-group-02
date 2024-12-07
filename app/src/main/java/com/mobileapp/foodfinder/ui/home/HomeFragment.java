@@ -39,13 +39,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
-
     private FragmentHomeBinding binding;
     private GoogleMap mMap;
-    private String searchURL;
-    private String distance_URL;
-    private String keyword_URL;
-    //private String user_distance;
 
     private void initializePlacesApi() {
         if (!Places.isInitialized()) {
@@ -101,6 +96,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private void searchFoodBanks(String address, String distance) {
+        String distance_URL;
+        String keyword_URL;
+        String searchURL;
         try {
             LatLng userLatLng = convertAddressToLatLng(address);
 
