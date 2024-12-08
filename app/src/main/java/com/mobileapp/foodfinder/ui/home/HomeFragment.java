@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +86,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(getContext(), "Please enter a valid address.", Toast.LENGTH_SHORT).show();
             }
         });
-
+        // Zoom buttons functionality
+        binding.zoomInButton.setOnClickListener(v -> zoomMap(true)); // Zoom in
+        binding.zoomOutButton.setOnClickListener(v -> zoomMap(false)); // Zoom out
         return root;
     }
 
@@ -96,7 +100,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private void searchFoodBanks(String address, String distance) {
-        String distance_URL;
         String keyword_URL;
         String searchURL;
         try {
@@ -107,90 +110,106 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             mMap.addMarker(new MarkerOptions().position(userLatLng).title("Your Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 14));
             // URL for Google Places Nearby Search API with keyword filter
-            searchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f";
-            String apiKey = getApiKey();
-            if(distance.isEmpty()){ // Distance defaults to 5000 meters
-                distance_URL = "&radius=" + "5000";
-            }else{
-                distance_URL = "&radius=" + distance;
+            if (distance.isEmpty()) { // Distance defaults to 5000 meters
+                distance = "5000";
             }
-
-            keyword_URL = "&keyword=food+bank&key=%s";
-            Log.d("Request URL", searchURL + distance_URL + keyword_URL);
-            String nearbySearchUrl = String.format(
-                    searchURL + distance_URL + keyword_URL,
+            String apiKey = getApiKey();
+            searchURL = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&radius=%s&keyword=food+bank&key=%s",
                     userLatLng.latitude,
                     userLatLng.longitude,
-                    apiKey
-            );
-            // Fetch data and place markers
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(nearbySearchUrl).build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    requireActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), "Failed to fetch food banks.", Toast.LENGTH_SHORT).show());
-                }
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if (response.isSuccessful() && response.body() != null) {
-                        String responseBody = response.body().string();
+                    distance,
+                    apiKey);
 
-                        // Log the JSON response
-                        Log.d("API Response", responseBody);
+            fetchAndDisplayFoodBanks(searchURL);
 
-                        requireActivity().runOnUiThread(() -> {
-                            try {
-                                // Parse the response and add markers
-                                JSONObject jsonObject = new JSONObject(responseBody);
-                                JSONArray results = jsonObject.getJSONArray("results");
-
-                                for (int i = 0; i < results.length(); i++) {
-                                    JSONObject place = results.getJSONObject(i);
-                                    String name = place.getString("name");
-                                    JSONArray types = place.getJSONArray("types");
-                                    JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
-                                    double lat = location.getDouble("lat");
-                                    double lng = location.getDouble("lng");
-
-                                    // Define the set of strings to be removed
-                                    Set<String> stringsToRemove = new HashSet<>(Arrays.asList("convenience_store", "gas_station"));
-
-                                    for (int j = 0; j < types.length(); j++) {
-                                        String type = types.getString(j); // Get the type string from the JSONArray
-
-                                        if (stringsToRemove.contains(type)) {
-                                            types.remove(j);
-                                            j--; // Adjust index for the removed element
-                                            Log.d("Types to be removed", stringsToRemove.toString());
-
-                                        } else {
-                                            // Add a marker to the map
-                                            LatLng placeLatLng = new LatLng(lat, lng);
-                                            mMap.addMarker(new MarkerOptions().position(placeLatLng).title(name));
-                                            Log.d("Types Out", types.toString());
-                                        }
-                                    }
-
-                                }
-                                Toast.makeText(getContext(), "Food banks added to map.", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                Log.e("HomeFragment", "Error parsing Places API response", e);
-                                Toast.makeText(getContext(), "Error displaying food banks.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Error fetching food banks.", Toast.LENGTH_SHORT).show());
-                    }
-                }
-
-            });
         } catch (IOException e) {
             Toast.makeText(getContext(), "Invalid address. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+            // Fetch data and place markers
+            private void fetchAndDisplayFoodBanks(String url) {
+                OkHttpClient client = new OkHttpClient();
 
+                Request request = new Request.Builder().url(url).build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Failed to fetch food banks.", Toast.LENGTH_SHORT).show());
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        if (response.isSuccessful() && response.body() != null) {
+                            String responseBody = response.body().string();
+
+                            Log.d("API Response", responseBody);
+
+                            requireActivity().runOnUiThread(() -> {
+                                try {
+                                    // Parse the response and add markers
+                                    JSONObject jsonObject = new JSONObject(responseBody);
+                                    JSONArray results = jsonObject.getJSONArray("results");
+
+                                    // Loop through the results and add markers
+                                    for (int i = 0; i < results.length(); i++) {
+                                        JSONObject place = results.getJSONObject(i);
+                                        String name = place.getString("name");
+
+                                        // Check the types array and skip places with unwanted types
+                                        JSONArray types = place.getJSONArray("types");
+                                        boolean excludePlace = false;
+                                        for (int j = 0; j < types.length(); j++) {
+                                            String type = types.getString(j);
+                                            if (type.equals("gas_station") || type.equals("shopping_mall") ||
+                                                    type.equals("grocery_or_supermarket") || type.equals("atm") || type.equals("restaurant")) {
+                                                excludePlace = true;
+                                                break; // No need to check further types
+                                            }
+                                        }
+
+                                        if (!excludePlace) {
+                                            // Add a marker for valid places
+                                            JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
+                                            double lat = location.getDouble("lat");
+                                            double lng = location.getDouble("lng");
+
+                                            LatLng placeLatLng = new LatLng(lat, lng);
+                                            mMap.addMarker(new MarkerOptions()
+                                                    .position(placeLatLng)
+                                                    .title(name));
+                                        }
+                                    }
+
+                                    // Handle pagination with next_page_token if available
+                                    if (jsonObject.has("next_page_token")) {
+                                        String nextPageToken = jsonObject.getString("next_page_token");
+
+                                        // Delay fetching the next page to ensure the token is active
+                                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                            String nextPageUrl = String.format(
+                                                    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=%s&key=%s",
+                                                    nextPageToken,
+                                                    getApiKey()
+                                            );
+                                            fetchAndDisplayFoodBanks(nextPageUrl); // Recursive call for the next page
+                                        }, 2000); // Delay of 2 seconds
+                                    } else {
+                                        Toast.makeText(getContext(), "Food banks added to map.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("HomeFragment", "Error parsing Places API response", e);
+                                    Toast.makeText(getContext(), "Error displaying food banks.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            requireActivity().runOnUiThread(() ->
+                                    Toast.makeText(getContext(), "Error fetching food banks.", Toast.LENGTH_SHORT).show());
+                        }
+                    }
+                });
+            }
     @SuppressWarnings("ConstantConditions")
     private LatLng convertAddressToLatLng(String address) throws IOException {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -200,6 +219,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .findFirst()
                 .map(location -> new LatLng(location.getLatitude(), location.getLongitude()))
                 .orElseThrow(() -> new IOException("Address not found"));
+    }
+
+    private void zoomMap(boolean zoomIn) {
+        if (mMap != null) {
+            float currentZoom = mMap.getCameraPosition().zoom;
+            float newZoom = zoomIn ? currentZoom + 1 : currentZoom - 1;
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(newZoom));
+        }
     }
 
     @Override

@@ -12,6 +12,8 @@
     <string name="about">About</string>
     <string name="dark_mode_on">Dark Mode On</string>
     <string name="dark_mode_off">Dark Mode Off</string>
+    <string name="zoom_in">+</string>
+    <string name="zoom_out">-</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
