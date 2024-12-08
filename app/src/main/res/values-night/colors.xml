@@ -1,0 +1,8 @@
+<!-- res/values-night/colors.xml -->
+<resources>
+    <!-- Dark Theme Colors (overrides for night mode) -->
+    <color name="background">@color/gray_light</color> <!-- Dark background for night mode -->
+    <color name="text">#FFFFFF</color> <!-- White text for night mode -->
+
+    <!-- You can override other colors as needed, like accents or other UI components -->
+</resources>
