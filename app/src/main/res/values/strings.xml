@@ -14,6 +14,7 @@
     <string name="dark_mode_off">Dark Mode Off</string>
     <string name="zoom_in">+</string>
     <string name="zoom_out">-</string>
+    <string name="favoriteButton">Favorite</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
