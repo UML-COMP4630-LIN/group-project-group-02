@@ -84,9 +84,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         // Set up the search button functionality
         binding.addressSubmit.setOnClickListener(view -> {
             String address = binding.addressInput.getText().toString().trim();
-            String distance = binding.distanceInput.getText().toString().trim();
+            String distance_userIn = binding.distanceInput.getText().toString().trim();
             if (!address.isEmpty()) {
-                searchFoodBanks(address, distance);
+                String distance_metersStr;
+                if (!distance_userIn.isEmpty()) {
+                    // Convert miles to meters
+                    int distance_miles = Integer.parseInt(distance_userIn);
+                    int distance_meters = distance_miles * 1610;
+                    distance_metersStr = String.valueOf(distance_meters);
+                } else {
+                    distance_metersStr = "5000";
+                }
+                searchFoodBanks(address, distance_metersStr);
             } else {
                 Toast.makeText(getContext(), "Please enter a valid address.", Toast.LENGTH_SHORT).show();
             }
