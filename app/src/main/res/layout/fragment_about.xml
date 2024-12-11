@@ -19,7 +19,7 @@
         android:id="@+id/about_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This app is designed to help users find food options near them. We provide a user-friendly interface with various categories of food items and help you discover new places to dine and order food from."
+        android:text="Food Finder aims to help individuals and families facing food insecurity by providing an intuitive platform to locate nearby food banks. The project focuses on addressing food access challenges to enhance well-being and promote food security. This app offers a user-friendly and intuitive app designed to simplify the process of finding food assistance. By using modern location-based services and accessible design, the app ensures that users can quickly locate food banks and get directions as well."
         android:textSize="16sp"
         android:textColor="@color/text"
         android:lineSpacingExtra="4dp"/>
