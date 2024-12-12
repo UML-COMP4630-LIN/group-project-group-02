@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
 
-        <!-- No need to declare AboutFragment here -->
-        <!-- <activity android:name=".ui.about.AboutFragment" /> -->
-
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
