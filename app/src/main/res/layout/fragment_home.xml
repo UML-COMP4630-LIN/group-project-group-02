@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Map Container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_container"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -19,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Address Input Field -->
     <EditText
         android:id="@+id/addressInput"
         android:layout_width="0dp"
@@ -33,7 +31,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.05" />
 
-    <!-- Distance Input Field -->
     <EditText
         android:id="@+id/distanceInput"
         android:layout_width="214dp"
@@ -47,7 +44,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.05" />
 
-    <!-- Submit Button -->
     <Button
         android:id="@+id/address_submit"
         android:layout_width="wrap_content"
@@ -59,7 +55,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.05" />
 
-    <!-- Zoom Out Button -->
     <Button
         android:id="@+id/zoom_out_button"
         android:layout_width="wrap_content"
@@ -72,7 +67,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.02" />
 
-    <!-- Zoom In Button -->
     <Button
         android:id="@+id/zoom_in_button"
         android:layout_width="wrap_content"
