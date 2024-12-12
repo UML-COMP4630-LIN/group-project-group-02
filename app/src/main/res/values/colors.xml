@@ -1,21 +1,17 @@
 <!-- res/values/colors.xml -->
 <resources>
-    <!-- Primary Colors -->
     <color name="green_light">#2E7D32</color>
     <color name="green_primary">#4CAF50</color>
     <color name="green_dark">#A8D5BA</color>
 
-    <!-- Complementary Colors -->
     <color name="orange_accent">#FF8A65</color>
     <color name="brown_accent">#5D4037</color>
 
-    <!-- Neutrals -->
-    <color name="black">#000000</color> <!-- Corrected to black -->
-    <color name="white">#FFFFFF</color> <!-- Corrected to white -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="gray_light">#424242</color>
     <color name="gray_dark">#BDBDBD</color>
 
-    <!-- Light Theme Colors (default) -->
-    <color name="background">#FFFFFF</color> <!-- Default background color for light theme -->
-    <color name="text">#000000</color> <!-- Default text color for light theme -->
+    <color name="background">#FFFFFF</color>
+    <color name="text">#000000</color>
 </resources>
