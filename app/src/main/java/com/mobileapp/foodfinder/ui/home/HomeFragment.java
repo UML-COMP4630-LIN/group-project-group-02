@@ -47,12 +47,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private Marker selectedMarker;
     private SharedViewModel viewModel;
 
+    /* 
+    * brief: Initializes the Google Places API using the API key 
+    * param:None
+    */
     private void initializePlacesApi() {
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), getApiKey());
         }
     }
 
+    /* 
+    * brief: Retrieves the Google Maps API key
+    * param:None
+    */
     private String getApiKey() {
         try {
             return requireContext()
@@ -65,6 +73,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /* 
+    * brief:Initializes the fragment view, sets up the map, and configures button listeners for search, zoom, and favorites.
+    * param: inflater- LayoutInflater to inflate the fragment view. container- Parent view into which the fragment UI will be added. savedInstanceState- Bundle containing the previous state of the fragment
+    */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -118,7 +130,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         return root;
     }
-
+    /* 
+    * brief:used when the Google Map is ready to use. Configures the map type and sets up a marker click listener.
+    * param: googleMap - The Google Map instance to interact with.
+    */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -133,6 +148,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    /* 
+    * brief: Searches for food banks near a given address and within a specified distance radius. Clears existing markers and updates the map.
+    * param: address- The address to search near. distance- The radius (in meters) for the search.
+    */
     @SuppressLint("MissingPermission")
     private void searchFoodBanks(String address, String distance) {
         String keyword_URL;
@@ -162,7 +181,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    // Fetch data and place markers
+    /* 
+    * brief: Searches for food banks near a given address and within a specified distance radius. Clears existing markers and updates the map.
+    * param: url- The API endpoint to fetch food bank data.
+    */
     private void fetchAndDisplayFoodBanks(String url) {
         OkHttpClient client = new OkHttpClient();
 
@@ -256,7 +278,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
+    /* 
+    * brief: Converts a standard address into latitude and longitude coordinates using the Geocoder API
+    * param: address- The address to convert into coordinates.
+    */
     @SuppressWarnings("ConstantConditions")
     private LatLng convertAddressToLatLng(String address) throws IOException {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -267,7 +292,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .map(location -> new LatLng(location.getLatitude(), location.getLongitude()))
                 .orElseThrow(() -> new IOException("Address not found"));
     }
-
+    
+    /* 
+    * brief: Adjusts the map's zoom level.
+    * param: zoomIn- Boolean indicating whether to zoom weather to zoom in or out.
+    */
     private void zoomMap(boolean zoomIn) {
         if (mMap != null) {
             float currentZoom = mMap.getCameraPosition().zoom;
@@ -275,7 +304,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             mMap.moveCamera(CameraUpdateFactory.zoomTo(newZoom));
         }
     }
-
+   
+    /* 
+    * brief: Cleans up references when the fragment view is destroyed.
+    * param: None
+    */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
