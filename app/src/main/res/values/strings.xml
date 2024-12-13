@@ -1,3 +1,7 @@
+/* 
+strings.xml
+This file is used to store strings that were used in the app, rather than hardcoding it.
+*/
 <resources>
     <string name="app_name">FoodFinder</string>
     <string name="title_home">Home</string>
