@@ -1,3 +1,38 @@
+/***********************************************
+ Authors: Andrew Jacobson, Noah Fay, Quang Tran, Brandon Nguyen
+ Date: 12/12/24
+ Purpose: Help people in need find affordable food options.
+ What Learned: Java programming with APIs and different libraries, along with overall mobile app programming.
+ Sources of Help:
+ https://developer.android.com/guide/components/processes-and-threads
+ https://developer.android.com/guide/components/processes-and-threads
+ https://developers.google.com/maps/documentation/android-sdk/marker
+ https://developer.android.com/reference/org/json/JSONObject
+ https://square.github.io/okhttp/
+ https://developers.google.com/maps/documentation/android-sdk/get-api-key
+ https://developer.android.com/reference/android/location/Geocoder
+ https://developers.google.com/maps/documentation/android-sdk/map
+ Time Spent (Hours): Average of 6-10 hours a week
+ ***********************************************/
+/*
+Mobile App Development I -- COMP.4630 Honor Statement
+The practice of good ethical behavior is essential for maintaining good order
+in the classroom, providing an enriching learning experience for students,
+and training as a practicing computing professional upon graduation. This
+practice is manifested in the University's Academic Integrity policy.
+Students are expected to strictly avoid academic dishonesty and adhere to the
+Academic Integrity policy as outlined in the course catalog. Violations will
+be dealt with as outlined therein. All programming assignments in this class
+are to be done by the student alone unless otherwise specified. No outside
+help is permitted except the instructor and approved tutors.
+I certify that the work submitted with this assignment is mine and was
+generated in a manner consistent with this document, the course academic
+policy on the course website on Blackboard, and the UMass Lowell academic
+code.
+Date: 12/12/24
+Names: Andrew Jacobson, Noah Fay, Quang Tran, Brandon Nguyen
+*/
+
 package com.mobileapp.foodfinder;
 
 import android.annotation.SuppressLint;
@@ -5,7 +40,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
