@@ -60,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private SharedPreferences sharedPreferences;
 
+    /*
+     * brief: Initializes the activity and sets up navigation components, themes, and listeners.
+     * param: savedInstanceState - Bundle containing the activity's previously saved state.
+     * return: void
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * brief: Called when the activity resumes; updates the menu item to reflect the current mode.
+     * param: None
+     * return: void
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -135,6 +145,11 @@ public class MainActivity extends AppCompatActivity {
         updateDarkModeMenuItem();
     }
 
+    /*
+     * brief: Toggles the app's theme between light and dark mode.
+     * param: None
+     * return: void
+     */
     private void toggleDarkMode() {
         boolean isNightMode = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES;
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -152,6 +167,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Update the Dark/Light Mode menu item title based on the current theme
+    /*
+     * brief: Updates the menu item title to match the current theme (Light Mode or Dark Mode).
+     * param: None
+     * return: void
+     */
     private void updateDarkModeMenuItem() {
         NavigationView navDrawer = findViewById(R.id.nav_drawer);
         Menu menu = navDrawer.getMenu();
@@ -166,6 +186,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * brief: Handles options menu item selection, including drawer toggle clicks.
+     * param: item - The selected MenuItem.
+     * return: boolean - True if the event is handled; otherwise, false.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {
@@ -174,6 +199,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+     * brief: Handles navigation when the Up button is pressed.
+     * param: None
+     * return: boolean - True if navigation is handled; otherwise, false.
+     */
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);

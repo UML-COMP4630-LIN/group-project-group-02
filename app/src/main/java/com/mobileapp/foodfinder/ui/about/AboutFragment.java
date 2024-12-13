@@ -11,6 +11,13 @@ import com.mobileapp.foodfinder.R;
 
 public class AboutFragment extends Fragment {
 
+    /*
+     * brief: Called to create and return the view hierarchy associated with the fragment.
+     * param: inflater - LayoutInflater object used to inflate any views in the fragment.
+     *        container - The parent view that the fragment's UI should be attached to.
+     *        savedInstanceState - Bundle object containing the fragment's previously saved state, if any.
+     * return: The root view of the fragment's layout.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

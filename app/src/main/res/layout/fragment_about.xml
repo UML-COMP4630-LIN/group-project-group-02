@@ -1,7 +1,7 @@
-/* 
+<!--
 fragment_about.xml
 This is the UI layout for the 'About' section when you open the menu drawer
-*/
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
