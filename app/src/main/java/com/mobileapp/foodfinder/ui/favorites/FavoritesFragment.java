@@ -24,6 +24,10 @@ public class FavoritesFragment extends Fragment {
     private ArrayAdapter<String> favoritesAdapter;
     private ListView favoriteListView;
 
+    /* 
+    * brief:Initializes the fragment view, sets up the favorites list view, and observes the shared favorites data to update the list when changes occur.
+    * param: inflater- LayoutInflater to inflate the fragment layout. container- Parent view into which the fragment UI will be added. savedInstanceState- Bundle containing the previous state of the fragment
+    */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -41,6 +45,10 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
 
+    /* 
+    * brief: Updates the favorites list displayed in the ListView with the data from the shared favorites list. Clears the existing list and repopulates it with updated data.
+    * param: favorites- A list of MarkerData objects representing the user's favorite locations.
+    */
     private void updateFavoriteList(List<MarkerData> favorites) {
         if (favoritesAdapter == null) {
 
@@ -56,7 +64,11 @@ public class FavoritesFragment extends Fragment {
         }
         favoritesAdapter.notifyDataSetChanged();
     }
-
+    
+    /* 
+    * brief: Cleans up the binding reference when the fragment's view is destroyed.
+    * param: None
+    */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
